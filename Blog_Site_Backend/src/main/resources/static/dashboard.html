@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+<body>
+    <h1>Dashboard</h1>
+    <button id="viewBlogs">View My Blogs</button>
+    <button id="createBlog">Create Blog</button>
+    <div id="content"></div>
+
+    <script>
+        document.getElementById("viewBlogs").addEventListener("click", async () => {
+            const userId = localStorage.getItem("userId");
+            const response = await fetch(`http://localhost:8080/api/blogs/${userId}`);
+
+            if (response.ok) {
+                const blogs = await response.json();
+                const contentDiv = document.getElementById("content");
+                contentDiv.innerHTML = `<h2>Your Blogs</h2>`;
+                blogs.forEach(blog => {
+                    contentDiv.innerHTML += `<p>${blog.title} - ${blog.content}</p>`;
+                });
+            } else {
+                alert("Failed to fetch blogs.");
+            }
+        });
+
+        document.getElementById("createBlog").addEventListener("click", () => {
+            window.location.href = "create-blog.html";
+        });
+    </script>
+</body>
+</html>

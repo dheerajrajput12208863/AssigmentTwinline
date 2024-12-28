@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Blog</title>
+</head>
+<body>
+    <h1>Create Blog</h1>
+    <form id="createBlogForm">
+        <input type="text" id="title" placeholder="Blog Title" required>
+        <textarea id="content" placeholder="Blog Content" required></textarea>
+        <button type="submit">Create</button>
+    </form>
+
+    <script>
+        document.getElementById("createBlogForm").addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const title = document.getElementById("title").value;
+            const content = document.getElementById("content").value;
+            const userId = localStorage.getItem("userId");
+
+            const response = await fetch("http://localhost:8080/api/blogs", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ title, content, userId })
+            });
+
+            if (response.ok) {
+                alert("Blog created successfully.");
+                window.location.href = "dashboard.html";
+            } else {
+                alert("Failed to create blog.");
+            }
+        });
+    </script>
+</body>
+</html>
